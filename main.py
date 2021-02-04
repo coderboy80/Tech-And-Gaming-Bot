@@ -5,16 +5,18 @@ import os
 
 token = os.environ.get("TECH_AND_GAMING_BOT")
 
-client = commands.Bot(command_prefix = ",")
+client = commands.Bot(command_prefix = ".")
 
 @client.event
 async def on_ready():
     print("Bot is ready")
 
+
+
 @client.command()
 async def ban(ctx, member : discord.Member, *, reason=None):
     await member.ban(reason=reason)
-    await ctx.send(f"Banned {member.mention}")
+    await ctx.send(f"Banned {member.mention}\nReason={reason}")
 
 @client.command()
 async def unban(ctx, *, member):
@@ -27,5 +29,22 @@ async def unban(ctx, *, member):
             await ctx.guild.unban(user)
             await ctx.send(f"Unbanned {user.mention}")
             return
+        
+@client.command(aliases=["p"])
+async def ping(ctx):
+    await ctx.send(f"Pong! {round(client.latency * 1000)} ms")
+
+@client.command(aliases=["purge"])
+async def clear(ctx, amount=2):
+    await ctx.channel.purge(limit=amount)
+
+@client.command()
+async def kick(ctx, member : discord.Member, *, reason=None):
+    await member.kick(reason=reason)
+    await ctx.send(f"Kicked {member.mention}\nReason={reason}")
+
+@client.command(alaises=["hi"])
+async def hello(ctx):
+    await ctx.send(f"Hello!")
 
 client.run(token)        
