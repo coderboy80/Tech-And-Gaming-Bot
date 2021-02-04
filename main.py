@@ -1,10 +1,9 @@
 import discord
 import random
 from discord.ext import commands
-#import os
+import os
 
-#token = os.environ.get("TECH_AND_GAMING_BOT")
-token = "ODA2NzE3MjU3MTkwOTk4MDI3.YBtf_g.p_Gf07j9hj8MOPAKnUP1u82ZtdE"
+token = os.environ.get("TECH_AND_GAMING_BOT")
 
 client = commands.Bot(command_prefix = ",")
 
