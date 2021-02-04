@@ -1,17 +1,18 @@
 import discord
 import random
-from discord.ext import commands
 import os
+from discord.ext import commands, tasks
+#from itertools import cycles
 
 token = os.environ.get("TECH_AND_GAMING_BOT")
 
 client = commands.Bot(command_prefix = ".")
 
+client.remove_command("help")
+
 @client.event
 async def on_ready():
     print("Bot is ready")
-
-
 
 @client.command()
 async def ban(ctx, member : discord.Member, *, reason=None):
@@ -46,5 +47,45 @@ async def kick(ctx, member : discord.Member, *, reason=None):
 @client.command(alaises=["hi"])
 async def hello(ctx):
     await ctx.send(f"Hello!")
+    
 
+################## help commands ##################
+@client.group(invoke_without_command=True)
+async def help(ctx):
+    em = discord.Embed(title = "Help", description= "Use .help <command> for extended information on a command.", color = ctx.author.color)
+
+    em.add_field(name="Moderation", value="kick, ban, unban")
+    em.add_field(name="Fun", value="ping, hello")
+    await ctx.send(embed=em)
+
+@help.command()
+async def kick(ctx):
+    em = discord.Embed(title="Kick", description="Kicks a member from the guild", color=ctx.author.color)
+    em.add_field(name="**Syntax**", value = ".kick <member> [reason]")
+    await ctx.send(embed=em)
+
+@help.command()
+async def ban(ctx):
+    em = discord.Embed(title="Ban", description="Bans a member from the guild", color=ctx.author.color)
+    em.add_field(name="**Syntax**", value = ".ban <member> [reason]")
+    await ctx.send(embed=em)
+
+@help.command()
+async def unban(ctx):
+    em = discord.Embed(title="Unban", description="Unbans a member from the guild", color=ctx.author.color)
+    em.add_field(name="**Syntax**", value = ".unban <member> [reason]")
+    await ctx.send(embed=em)
+
+@help.command()
+async def ping(ctx):
+    em = discord.Embed(title="Ping", description="Shows Bot's latency to Discord's API.", color=ctx.author.color)
+    em.add_field(name="**Syntax**", value = ".ping")
+    await ctx.send(embed=em)
+
+@help.command()
+async def hello(ctx):
+    em = discord.Embed(title="Hello", description="Says Hello back to you", color=ctx.author.color)
+    em.add_field(name="**Syntax**", value = ".hello")
+    await ctx.send(embed=em)
+    
 client.run(token)        
